@@ -1,0 +1,22 @@
+---
+# Tasks for CentOS 7| Redhat 7 
+- name: Intall required packages
+  yum: name={{ item }} state=present
+  with_items:
+    - httpd
+    - mariadb-server
+    - mariadb
+    - php
+    - php-mysql
+    - MySQL-python
+- name: Start mariadb
+  service: name=mariadb state=started enabled=yes
+- name: start httpd
+  service: name=httpd state=started
+- name: Allow http access
+  firewalld: service=http immediate=true permanent=true state=enabled
+- name: Create database
+  include: mysqldb.yml
+- name: Download and extract wordpress
+  include: wpdownload.yml
+

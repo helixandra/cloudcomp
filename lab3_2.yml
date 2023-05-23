@@ -1,0 +1,32 @@
+heat_template_version: "2015-04-30"
+description: Lab 3
+
+resources:
+  chatserver_secgroup:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - protocol: tcp
+          port_range_max: 22
+          port_range_min: 22
+
+        - protocol: tcp
+          port_range_max: 80
+          port_range_min: 80
+
+  chatserver_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: 17eae9b6-2168-4a07-a0d3-66d5ad2a9f0e
+      security_groups:
+        - get_resource: chatserver_secgroup
+
+  chatserver:
+    type: OS::Nova::Server
+    properties:
+      name: lab3_min2
+      key_name: testmin
+      image: ubuntu-20.04
+      flavor: m1.small
+      networks:
+        - port: { get_resource: chatserver_port }

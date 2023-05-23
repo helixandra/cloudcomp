@@ -1,0 +1,12 @@
+---
+- hosts: all
+  vars:
+    wp_version: 4.8
+    wp_install_dir: '/var/www/html/'
+    wp_db_name: 'wp_database'
+    wp_db_user: 'wp_user'
+    wp_db_password: 'password'
+    wp_db_host: '192.168.199.226'
+  become: yes
+  roles:
+  - chanchalbose.wordpress

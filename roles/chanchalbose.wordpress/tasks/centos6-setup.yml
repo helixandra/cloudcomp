@@ -1,0 +1,25 @@
+---
+# tasks file for CentOS 6|Redhat 6
+- name: Intall required packages
+  yum: name={{ item }} state=present
+  with_items:
+    - httpd
+    - mysql-server
+    - mysql
+    - php
+    - php-mysql
+    - MySQL-python
+- name: Start mariadb
+  service: name=mysql state=started enabled=yes
+- name: CentOS|Redhat start apache service
+  service: name=httpd state=started
+#- name: Copy .my.cnf to nodes
+#  copy: src=.my.cnf dest=/root/.my.cnf
+- iptables: protocol=tcp port=80 chain=INPUT ctstate=NEW,ESTABLISHED,RELATED jump=ACCEPT
+- name: Create database
+  include: mysqldb.yml
+- name: Download and extract wordpress
+  include: wpdownload.yml
+    
+
+
